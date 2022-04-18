@@ -36,8 +36,10 @@ class App extends Component {
           {
             //customers가 배열이기에 각원소에 어떠한것을 적용하고싶을때 map
             customers.map(c=>{
+              //map 함수는 key 값을 가지고 있어야함
               return (
               <Customer
+                key={c.id}
                 id={c.id}
                 image={c.image}
                 name={c.name}
