@@ -20,34 +20,24 @@ const styles = (theme) => ({
   },
 });
 
-const customers = [
-  {
-    id: 1,
-    image: "https://placeimg.com/64/64/1",
-    name: "이진일",
-    birthday: "960723",
-    gender: "남자",
-    job: "대학생",
-  },
-  {
-    id: 2,
-    image: "https://placeimg.com/64/64/2",
-    name: "이진이",
-    birthday: "961222",
-    gender: "남자",
-    job: "개발자",
-  },
-  {
-    id: 3,
-    image: "https://placeimg.com/64/64/3",
-    name: "이진삼",
-    birthday: "961232",
-    gender: "남자",
-    job: "디자이너",
-  },
-];
+
 
 class App extends Component {
+//props 변경될수 없는 데이터
+//state  변경가능
+  state = {
+    customers : ""
+  }
+  componentDidMount(){
+    this.callApi()
+    .then(res => this.setState({customers : res}))
+    .catch(err =>console.log(err));
+  }
+  callApi = async ()=>{
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -66,7 +56,7 @@ class App extends Component {
           <TableBody>
             {
               //customers가 배열이기에 각원소에 어떠한것을 적용하고싶을때 map
-              customers.map((c) => {
+              this.state.customers ? this.state.customers.map((c) => {
                 //map 함수는 key 값을 가지고 있어야함
                 return (
                   <Customer
@@ -77,9 +67,8 @@ class App extends Component {
                     birthday={c.birthday}
                     gender={c.gender}
                     job={c.job}
-                  />
-                );
-              })
+                  />);
+              }) : " "
             }
           </TableBody>
         </Table>
